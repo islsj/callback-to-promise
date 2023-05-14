@@ -1,0 +1,35 @@
+{
+	"compilerOptions": {
+		// esnext是⼀个泛指, 它永远指向下⼀个es版本
+		"target": "ESNext", // 遵循esnext版本
+		"module": "ESNext", // 打包模块类型esnext
+		"moduleResolution": "node", // 按照node模块来解析
+		"lib": ["esnext", "dom", "dom.iterable", "scripthost"], // 编译时用的库
+		"jsx": "preserve", //不用ts自带的jsx转换
+
+		"strict": true, // 是否启动严格模式
+		"skipLibCheck": true, // 跳过类库检测
+		"sourceMap": true, //导出sourceMap
+		"noEmit": true,
+		"isolatedModules": true,
+
+		"noImplicitAny": true, // 支持类型不标注可以默认any
+		"esModuleInterop": true, // 支持es6,commonjs模块
+		"resolveJsonModule": true, // 允许导入json文件
+		"allowSyntheticDefaultImports": true, // 允许没有导出的模块中导入
+		"forceConsistentCasingInFileNames": true, // 强制区分大小写
+		"useDefineForClassFields": true, // 将 class 声明中的字段语义从 [[Set]] 变更到 [[Define]]
+		//"types": ["webpack-env"],
+		"types": ["vite/client", "jest"],
+		"baseUrl": ".", // 解析非相对模块的基地址，默认是当前目录
+		"paths": {
+			// 路径映射，相对于baseUrl
+			"@/*": ["src/*"],
+			"@core/*": ["../core/*"]
+		},
+			"emitDecoratorMetadata": true,
+			"experimentalDecorators": true,
+			//"target": "ES5"
+	},
+	"include": ["src/*.ts"]
+}
