@@ -2,10 +2,10 @@
 	"name": "callback-to-promise",
 	"version": "1.0.0",
 	"description": "",
-	"type": "module",
-	"main": "index.js",
+	"main": "./dist/callbackToPromise.umd.js",
 	"scripts": {
-		"test": "npx jest --watchAll"
+		"test": "npx jest --watchAll",
+		"build": "vite build"
 	},
 	"author": "",
 	"license": "ISC",

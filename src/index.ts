@@ -24,7 +24,6 @@ const createTimer = (rejectCallBack: Function, second: number): number => {
 		}
 	}, second * 1000)
 }
-//  观察任务队列
 type taskQueueType = {
 	value: any[]
 	updated: Function
