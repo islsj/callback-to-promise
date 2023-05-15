@@ -26,12 +26,12 @@ await setTimeoutPromise(() => {
 #### Example 2:
 
 ```js
-let testFn = (fn1: Function, fn2: Function, fn3: Function) => {
+let testFn = (fn1, fn2, fn3) => {
 	setTimeout(() => fn1(), 300)
 	setTimeout(() => fn2(), 100)
 	setTimeout(() => fn3(), 200)
 }
-let setTimeoutPromise = callbackToPromise(testFn, { wait: 'all' output: 'order' })
+let testFnPromise = callbackToPromise(testFn, { wait: 'all' output: 'order' })
 await testFnPromise(
 	() => {
 		console.log('fn1')
@@ -51,7 +51,7 @@ await testFnPromise(
 #### Example 3:
 
 ```js
-let testFn = (fn1: Function, fn2: Function, fn3: Function) => {
+let testFn = (fn1, fn2, fn3) => {
 	setTimeout(() => fn1(), 100)
 	setTimeout(() => fn2(), 200)
 	setTimeout(() => fn3(), 300)
@@ -70,6 +70,43 @@ let returnValue = await testFnPromise(
 )
 console.log(returnValue[0].result) //fn2end
 console.log(returnValue[1].result) //fn3end
+```
+
+#### Example 4:
+
+```js
+let obj = {
+	testFn(fn1) {
+		setTimeout(() => fn1(), this.second * 1000)
+	},
+	second: 3,
+}
+let testFnPromise = callbackToPromise(obj, 'testFn')
+let returnValue = await testFnPromise(() => {
+	return 'fn1end'
+})
+console.log(returnValue[0].result) // fn1end
+```
+
+#### Example 5:
+
+```js
+// 创建 DOM 元素
+const button = document.createElement('button')
+button.textContent = 'Click me'
+document.body.appendChild(button)
+// 触发点击事件
+setTimeout(() => button.click(), 200)
+// 绑定点击事件
+let count = 0
+let testFnPromise = callbackToPromise(button, 'addEventListener')
+let returnValue = await testFnPromise('click', () => {
+	count++
+})
+//	移除事件
+button.removeEventListener('click', returnValue[0].callback)
+button.click()
+console.log('Button clicked count:' + count) // Button clicked! count:1
 ```
 
 ## Option
