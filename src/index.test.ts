@@ -135,20 +135,20 @@ describe('测试callbackToPromise函数', () => {
 		//expect(console.log).toHaveBeenCalledWith('fn1end!')
 	})
 	test('测试绑定this', async () => {
-		//let obj = {
-		//	testFn(fn1: Function) {
-		//		setTimeout(() => fn1(), this.second * 1000)
-		//	},
-		//	second: 3,
-		//	setTimeout: setTimeout,
-		//	testVal: 'hello',
-		//}
-		//let testFnPromise = callbackToPromise(obj, 'testFn')
-		//let returnValue = await testFnPromise(() => {
-		//	return 'fn1end!'
-		//})
-		//console.log(returnValue[0].result)
-		//expect(console.log).toHaveBeenCalledWith('fn1end!')
+		let obj = {
+			testFn(fn1: Function) {
+				setTimeout(() => fn1(), this.second * 1000)
+			},
+			second: 3,
+			setTimeout: setTimeout,
+			testVal: 'hello',
+		}
+		let testFnPromise = callbackToPromise(obj, 'testFn', { wait: 'all', output: 'sort' })
+		let returnValue = await testFnPromise(() => {
+			return 'fn1end!'
+		})
+		console.log(returnValue[0].result)
+		expect(console.log).toHaveBeenCalledWith('fn1end!')
 	})
 	test('测试addEventListener的callback转换为promsie', async () => {
 		//// 创建 JSDOM 环境

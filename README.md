@@ -81,7 +81,7 @@ let obj = {
 	},
 	second: 3,
 }
-let testFnPromise = callbackToPromise(obj, 'testFn')
+let testFnPromise = callbackToPromise(obj, 'testFn', { wait: 'all', output: 'sort' })
 let returnValue = await testFnPromise(() => {
 	return 'fn1end'
 })
@@ -103,7 +103,7 @@ let testFnPromise = callbackToPromise(button, 'addEventListener')
 let returnValue = await testFnPromise('click', () => {
 	count++
 })
-//	移除事件
+// 移除点击事件
 button.removeEventListener('click', returnValue[0].callback)
 button.click()
 console.log('Button clicked count:' + count) // Button clicked! count:1
