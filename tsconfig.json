@@ -27,9 +27,9 @@
 			"@/*": ["src/*"],
 			"@core/*": ["../core/*"]
 		},
-			"emitDecoratorMetadata": true,
-			"experimentalDecorators": true,
-			//"target": "ES5"
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true
+		//"target": "ES5"
 	},
-	"include": ["src/*.ts"]
+	"include": ["src/*.ts", "src/*.js"]
 }

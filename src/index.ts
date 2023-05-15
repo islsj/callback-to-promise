@@ -52,8 +52,13 @@ const watcTaskQueue = (taskQueue: any, callback: Function) => {
 	taskQueue.updated = callback
 }
 
-export default function callbackToPromise<T extends Function>(original: T, option?: Option) {
-	const { wait = WAIT.ALL, output = OUTPUT.SORT, second = 0 } = option || {}
+function callbackToPromise<T extends Function & Record<string, any>>(original: T, option?: Option): Function
+function callbackToPromise<T extends Function & Record<string, any>>(original: T, fnName?: string, option?: Option): Function
+
+function callbackToPromise<T extends Function & Record<string, any>>(original: T, fnNameOrOption?: Option | string, option?: Option): Function {
+	let fnName: string | null = typeof fnNameOrOption == 'string' ? (fnNameOrOption as string) : null
+	option = fnNameOrOption instanceof Object ? fnNameOrOption : {}
+	const { wait = WAIT.ALL, output = OUTPUT.SORT, second = 0 } = option
 	let result: any[] = []
 	let taskQueue: Function[] = []
 
@@ -65,15 +70,15 @@ export default function callbackToPromise<T extends Function>(original: T, optio
 				let timer = createTimer(rej, second)
 				//  2.创建任务队列
 				let taskQueue = new createTaskQueue()
-				//  3.遍历入参,改造callback
+				//  3.1 遍历入参,改造callback
 				for (let idx in args) {
 					if (toString.call(args[idx]) === '[object Function]') {
 						const cb = args[idx]
 						taskQueue.value.push(cb)
 
 						if (!Array.isArray(wait) || wait.includes(parseInt(idx))) {
-							args[idx] = () => {
-								result.push({ callback: args[idx], result: cb() })
+							args[idx] = function (...rest: any[]) {
+								result.push({ callback: args[idx], result: cb(...rest) })
 								// callback执行过后从任务队列里移除
 								delOneItemOfArr(taskQueue.value, cb)
 							}
@@ -104,8 +109,18 @@ export default function callbackToPromise<T extends Function>(original: T, optio
 						res([result[0]])
 					}
 				})
-				// 5.执行原始函数
-				original(...args)
+
+				//	绑定this
+
+				// 5.1 执行原始函
+				if (len === 0) {
+					// 5.2 如果任务队列为空,则说明传进来的函数,没有callback,那么就立即返回成功状态
+					if (fnName !== null) res(original[fnName](...args))
+					else res(original(...args))
+				} else {
+					if (fnName !== null) original[fnName](...args)
+					else original(...args)
+				}
 			} catch (err) {
 				rej(err)
 			}
@@ -113,3 +128,5 @@ export default function callbackToPromise<T extends Function>(original: T, optio
 	}
 	return fn
 }
+callbackToPromise(setTimeout, 'setTimeout')
+export default callbackToPromise

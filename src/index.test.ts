@@ -1,4 +1,6 @@
 import callbackToPromise from './index'
+import { JSDOM } from 'jsdom'
+
 describe('测试callbackToPromise函数', () => {
 	const spy = jest.spyOn(console, 'log')
 	//spy.mockRestore()
@@ -131,5 +133,43 @@ describe('测试callbackToPromise函数', () => {
 		//console.log(returnValue[0].result)
 		//expect(console.log).toHaveBeenCalledWith('fn1')
 		//expect(console.log).toHaveBeenCalledWith('fn1end!')
+	})
+	test('测试绑定this', async () => {
+		//let obj = {
+		//	testFn(fn1: Function) {
+		//		setTimeout(() => fn1(), this.second * 1000)
+		//	},
+		//	second: 3,
+		//	setTimeout: setTimeout,
+		//	testVal: 'hello',
+		//}
+		//let testFnPromise = callbackToPromise(obj, 'testFn')
+		//let returnValue = await testFnPromise(() => {
+		//	return 'fn1end!'
+		//})
+		//console.log(returnValue[0].result)
+		//expect(console.log).toHaveBeenCalledWith('fn1end!')
+	})
+	test('测试addEventListener的callback转换为promsie', async () => {
+		//// 创建 JSDOM 环境
+		//const dom = new JSDOM('<html><body></body></html>')
+		//const jsdocument = dom.window.document
+		//// 创建 DOM 元素
+		//const button = jsdocument.createElement('button')
+		//button.textContent = 'Click me'
+		//jsdocument.body.appendChild(button)
+		//// 触发点击事件
+		//setTimeout(() => button.click(), 200)
+		//// 绑定点击事件
+		//let count = 0
+		//let testFnPromise = callbackToPromise(button as any, 'addEventListener')
+		//let returnValue = await testFnPromise('click', () => {
+		//	count++
+		//})
+		////	移除事件
+		//button.removeEventListener('click', returnValue[0].callback)
+		//button.click()
+		//console.log('Button clicked! count:' + count)
+		//expect(console.log).toHaveBeenCalledWith('Button clicked! count:1')
 	})
 })
