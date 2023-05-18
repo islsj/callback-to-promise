@@ -12,5 +12,4 @@ export default defineConfig({
 		sourcemap: false, // 输出.map文件
 		rollupOptions: {},
 	},
-	//plugins: [typescript()],
 })

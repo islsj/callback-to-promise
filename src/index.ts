@@ -17,7 +17,7 @@ const delOneItemOfArr = (proxyArr: Function[], item: any) => {
 	if (index > -1) proxyArr.splice(index, 1)
 }
 //  创建计时器
-const createTimer = (rejectCallBack: Function, second: number): number => {
+const createTimer = (rejectCallBack: Function, second: number): NodeJS.Timeout => {
 	return setTimeout(() => {
 		if (second > 0) {
 			rejectCallBack('execution time timeout')
@@ -78,9 +78,11 @@ function callbackToPromise<T extends Function & Record<string, any>>(original: T
 
 						if (!Array.isArray(wait) || wait.includes(parseInt(idx))) {
 							args[idx] = function (...rest: any[]) {
-								result.push({ callback: args[idx], result: cb(...rest) })
+								const resultVal = cb(...rest)
+								result.push({ callback: args[idx], result: resultVal })
 								// callback执行过后从任务队列里移除
 								delOneItemOfArr(taskQueue.value, cb)
+								return resultVal
 							}
 						}
 					}
@@ -128,5 +130,5 @@ function callbackToPromise<T extends Function & Record<string, any>>(original: T
 	}
 	return fn
 }
-callbackToPromise(setTimeout, 'setTimeout')
+
 export default callbackToPromise

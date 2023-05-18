@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-$ npm install --save callback-to-promise
+npm install --save callback-to-promise
 ```
 
 ## Usage
@@ -114,7 +114,7 @@ console.log('Button clicked count:' + count) // Button clicked! count:1
 | 配置   |            参数             |     默认 | 描述                                                                                                |
 | :----- | :-------------------------: | -------: | --------------------------------------------------------------------------------------------------- |
 | wait   | `"all"` `"race"` `number[]` |  `"all"` | all:等待所有 callback 执行<br>race:只等待最先执行的 callback<br>number[]:等待指定 callback 执行<br> |
-| output |     `"sort"` `"order"`      | `"sort"` | sort:返回值已入参顺序返回<br>order:返回值已执行顺序返回<br>                                         |
-| second |           number            |      `0` | 超时时间                                                                                            |
+| output |     `"sort"` `"order"`      | `"sort"` | sort:返回值按照入参顺序返回<br>order:返回值按照执行顺序返回<br>                                     |
+| second |           number            |      `0` | 超时时间,0 为永不超时时                                                                             |
 
 ————————————————
